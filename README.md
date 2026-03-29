@@ -20,6 +20,12 @@ python compare_tracks.py original.mp3 suspected_cover.mp3 --clap
 
 # JSON output
 python compare_tracks.py original.mp3 suspected_cover.mp3 --clap --json
+
+# Evaluate only complete MIPPIA SMP pairs
+python evaluate_mippia.py
+
+# Quick dry run on the first 5 complete pairs
+python evaluate_mippia.py --limit 5
 ```
 
 ## Example Output
