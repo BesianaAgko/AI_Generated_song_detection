@@ -27,3 +27,8 @@ htmlcov/
 .DS_Store
 Thumbs.db
 .vscode/
+
+#dataset
+data/
+smp_dataset/
+
