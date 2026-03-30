@@ -1,0 +1,1018 @@
+[
+  {
+    "pair_id": "1",
+    "track_a": "Summer Dream.wav",
+    "track_b": "김민종   귀천도애_歸天道哀_ _가사 첨부_.wav",
+    "attribution_score": 0.9549,
+    "interpretation": "Πολύ πιθανή attribution — σχεδόν σίγουρα AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9799,
+      "chroma": 0.9842,
+      "tempo": 0.7841,
+      "hnr": 0.8876,
+      "spectral_flatness": 0.9877,
+      "phase_discontinuity": 0.9993
+    }
+  },
+  {
+    "pair_id": "3",
+    "relation": "plag",
+    "ori_title": "The Gap Band - Oops Upside Your Head",
+    "comp_title": "Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars",
+    "track_a": "Mark Ronson - Uptown Funk _Official Video_ ft_ Bruno Mars.wav",
+    "track_b": "The Gap Band - Oops Upside Your Head.wav",
+    "attribution_score": 0.9703,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9666,
+      "mel": 0.997,
+      "chroma": 0.9922,
+      "tempo": 0.796,
+      "hnr": 0.9767,
+      "spectral_flatness": 0.9903,
+      "phase_discontinuity": 0.9978
+    }
+  },
+  {
+    "pair_id": "4",
+    "relation": "plag",
+    "ori_title": "Las Chicas Del Can El Negro No Puede",
+    "comp_title": "Shakira - Waka Waka (This Time for Africa) (The Official 2010 FIFA World Cup™ Song)",
+    "track_a": "Las Chicas Del Can El Negro No Puede.wav",
+    "track_b": "Shakira - Waka Waka _This Time for Africa_ _The Official 2010 FIFA World Cup_ Song_.wav",
+    "attribution_score": 0.9493,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.8726,
+      "mel": 0.9972,
+      "chroma": 0.9859,
+      "tempo": 0.8651,
+      "hnr": 0.9768,
+      "spectral_flatness": 0.9596,
+      "phase_discontinuity": 0.9992
+    }
+  },
+  {
+    "pair_id": "5",
+    "relation": "remake",
+    "ori_title": "Jennifer Rush - The Power Of Love (Official Video) (VOD)",
+    "comp_title": "Céline Dion - The Power Of Love (Official Remastered HD Video)",
+    "track_a": "Céline Dion - The Power Of Love _Official Remastered HD Video_.wav",
+    "track_b": "Jennifer Rush - The Power Of Love _Official Video_ _VOD_.wav",
+    "attribution_score": 0.9635,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9735,
+      "mel": 0.9949,
+      "chroma": 0.9525,
+      "tempo": 0.9726,
+      "hnr": 0.8776,
+      "spectral_flatness": 0.9874,
+      "phase_discontinuity": 0.9989
+    }
+  },
+  {
+    "pair_id": "6",
+    "relation": "plag_doubt",
+    "ori_title": "Killing Joke - Eighties",
+    "comp_title": "Nirvana - Come As You Are (Official Music Video)",
+    "track_a": "Killing Joke - Eighties.wav",
+    "track_b": "Nirvana - Come As You Are _Official Music Video_.wav",
+    "attribution_score": 0.9404,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9335,
+      "mel": 0.9897,
+      "chroma": 0.9923,
+      "tempo": 0.5132,
+      "hnr": 0.9776,
+      "spectral_flatness": 0.9958,
+      "phase_discontinuity": 0.9973
+    }
+  },
+  {
+    "pair_id": "7",
+    "relation": "plag_doubt",
+    "ori_title": "Artikal Sound System - Live Your Life (Official Audio) (Original Version)",
+    "comp_title": "Dua Lipa - Levitating Featuring DaBaby (Official Music Video)",
+    "track_a": "Artikal Sound System - Live Your Life _Official Audio_ _Original Version_.wav",
+    "track_b": "Dua Lipa - Levitating Featuring DaBaby _Official Music Video_.wav",
+    "attribution_score": 0.9826,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9769,
+      "mel": 0.9981,
+      "chroma": 0.9929,
+      "tempo": 0.9337,
+      "hnr": 0.9734,
+      "spectral_flatness": 0.9863,
+      "phase_discontinuity": 0.9969
+    }
+  },
+  {
+    "pair_id": "8",
+    "relation": "plag_doubt",
+    "ori_title": "Paramore: Misery Business [OFFICIAL VIDEO]",
+    "comp_title": "Olivia Rodrigo - good 4 u (Lyrics)",
+    "track_a": "Olivia Rodrigo - good 4 u _Lyrics_.wav",
+    "track_b": "Paramore_ Misery Business _OFFICIAL VIDEO_.wav",
+    "attribution_score": 0.9701,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9661,
+      "mel": 0.9963,
+      "chroma": 0.9869,
+      "tempo": 0.9204,
+      "hnr": 0.9165,
+      "spectral_flatness": 0.982,
+      "phase_discontinuity": 0.9979
+    }
+  },
+  {
+    "pair_id": "9",
+    "relation": "plag",
+    "ori_title": "Love Is A Wonderful Thing (1991 Remastered)",
+    "comp_title": "Michael Bolton - Love Is a Wonderful Thing",
+    "track_a": "Love Is A Wonderful Thing _1991 Remastered_.wav",
+    "track_b": "Michael Bolton - Love Is a Wonderful Thing.wav",
+    "attribution_score": 0.9474,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9581,
+      "mel": 0.9981,
+      "chroma": 0.9796,
+      "tempo": 0.5403,
+      "hnr": 0.9906,
+      "spectral_flatness": 0.9892,
+      "phase_discontinuity": 0.9971
+    }
+  },
+  {
+    "pair_id": "10",
+    "relation": "plag_doubt",
+    "ori_title": "I cigni di Balaka",
+    "comp_title": "Michael Jackson - Will You Be There (Official Video)",
+    "track_a": "I cigni di Balaka.wav",
+    "track_b": "Michael Jackson - Will You Be There _Official Video_.wav",
+    "attribution_score": 0.9499,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9739,
+      "mel": 0.9976,
+      "chroma": 0.9719,
+      "tempo": 0.8416,
+      "hnr": 0.8166,
+      "spectral_flatness": 0.9791,
+      "phase_discontinuity": 0.9967
+    }
+  },
+  {
+    "pair_id": "11",
+    "relation": "remake",
+    "ori_title": "Without you - Badfinger",
+    "comp_title": "Mariah Carey - Without You (Official Lyric Video)",
+    "track_a": "Mariah Carey - Without You _Official Lyric Video_.wav",
+    "track_b": "Without you - Badfinger.wav",
+    "attribution_score": 0.9753,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9733,
+      "mel": 0.9966,
+      "chroma": 0.9903,
+      "tempo": 0.8582,
+      "hnr": 0.9706,
+      "spectral_flatness": 0.9904,
+      "phase_discontinuity": 0.9975
+    }
+  },
+  {
+    "pair_id": "12",
+    "relation": "plag_doubt",
+    "ori_title": "The Rubinoos - I Want To Be Your Boyfriend",
+    "comp_title": "Avril Lavigne - Girlfriend (Official Video)",
+    "track_a": "Avril Lavigne - Girlfriend _Official Video_.wav",
+    "track_b": "The Rubinoos - I Want To Be Your Boyfriend.wav",
+    "attribution_score": 0.9317,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9635,
+      "mel": 0.997,
+      "chroma": 0.9848,
+      "tempo": 0.4381,
+      "hnr": 0.9101,
+      "spectral_flatness": 0.9857,
+      "phase_discontinuity": 0.999
+    }
+  },
+  {
+    "pair_id": "13",
+    "relation": "plag",
+    "ori_title": "조덕배 - 나의 옛날 이야기",
+    "comp_title": "&design(앤디자인)-문근영",
+    "track_a": "_design_앤디자인_-문근영.wav",
+    "track_b": "조덕배 - 나의 옛날 이야기.wav",
+    "attribution_score": 0.9321,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9081,
+      "mel": 0.9971,
+      "chroma": 0.9803,
+      "tempo": 0.6582,
+      "hnr": 0.8849,
+      "spectral_flatness": 0.9901,
+      "phase_discontinuity": 0.9986
+    }
+  },
+  {
+    "pair_id": "14",
+    "relation": "plag",
+    "ori_title": "情熱(정열)-斉藤由貴(사이토 유키)",
+    "comp_title": "[ArtTrack] 변진섭 - 로라",
+    "track_a": "_ArtTrack_ 변진섭 - 로라.wav",
+    "track_b": "情熱_정열_-斉藤由貴_사이토 유키_.wav",
+    "attribution_score": 0.9744,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9692,
+      "mel": 0.9962,
+      "chroma": 0.9524,
+      "tempo": 0.9495,
+      "hnr": 0.9829,
+      "spectral_flatness": 0.9932,
+      "phase_discontinuity": 0.9968
+    }
+  },
+  {
+    "pair_id": "15",
+    "relation": "plag",
+    "ori_title": "＂Dont Look In My EYes＂ - Sam Harris (1984)",
+    "comp_title": "날 울리지마 (Don’t Make Me Cry)",
+    "track_a": "_Dont Look In My EYes_ - Sam Harris _1984_.wav",
+    "track_b": "날 울리지마 _Don_t Make Me Cry_.wav",
+    "attribution_score": 0.9326,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9564,
+      "mel": 0.9962,
+      "chroma": 0.9725,
+      "tempo": 0.7802,
+      "hnr": 0.7483,
+      "spectral_flatness": 0.9786,
+      "phase_discontinuity": 0.9975
+    }
+  },
+  {
+    "pair_id": "16",
+    "relation": "plag",
+    "ori_title": "シャ乱Q「こんなにあなたを愛しているのに」",
+    "comp_title": "플라워-친구",
+    "track_a": "シャ乱Q_こんなにあなたを愛しているのに_.wav",
+    "track_b": "플라워-친구.wav",
+    "attribution_score": 0.9648,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9748,
+      "mel": 0.9981,
+      "chroma": 0.9912,
+      "tempo": 0.7738,
+      "hnr": 0.9272,
+      "spectral_flatness": 0.9946,
+      "phase_discontinuity": 0.9989
+    }
+  },
+  {
+    "pair_id": "17",
+    "relation": "plag",
+    "ori_title": "하늘에서 내리는 1억개의 별-空から降る一億の星-the smile has left your eyes",
+    "comp_title": "FTISLAND (FT아일랜드) - 사랑앓이 [가사⧸Lyrics]",
+    "track_a": "FTISLAND _FT아일랜드_ - 사랑앓이 _가사_Lyrics_.wav",
+    "track_b": "하늘에서 내리는 1억개의 별-空から降る一億の星-the smile has left your eyes.wav",
+    "attribution_score": 0.9688,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9667,
+      "mel": 0.9977,
+      "chroma": 0.9883,
+      "tempo": 0.8917,
+      "hnr": 0.9114,
+      "spectral_flatness": 0.9889,
+      "phase_discontinuity": 0.9995
+    }
+  },
+  {
+    "pair_id": "18",
+    "relation": "plag",
+    "ori_title": "[Official Audio] 이정현(Lee Jung-hyun) - 와",
+    "comp_title": "Bandido - Vamos Amigos (Eurodance Version)",
+    "track_a": "_Official Audio_ 이정현_Lee Jung-hyun_ - 와.wav",
+    "track_b": "Bandido - Vamos Amigos _Eurodance Version_.wav",
+    "attribution_score": 0.9694,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9338,
+      "mel": 0.998,
+      "chroma": 0.9962,
+      "tempo": 1.0,
+      "hnr": 0.9248,
+      "spectral_flatness": 0.956,
+      "phase_discontinuity": 0.9986
+    }
+  },
+  {
+    "pair_id": "19",
+    "relation": "plag",
+    "ori_title": "FAKE LOVE",
+    "comp_title": "Seiell - Scenne Nenne MV (Plagiat BTS Fake Love)",
+    "track_a": "FAKE LOVE.wav",
+    "track_b": "Seiell - Scenne Nenne MV _Plagiat BTS Fake Love_.wav",
+    "attribution_score": 0.9721,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9393,
+      "mel": 0.9959,
+      "chroma": 0.9908,
+      "tempo": 0.9761,
+      "hnr": 0.9469,
+      "spectral_flatness": 0.9752,
+      "phase_discontinuity": 0.9989
+    }
+  },
+  {
+    "pair_id": "20",
+    "relation": "plag",
+    "ori_title": "박혜경(더더) - Its You (1998年)",
+    "comp_title": "너에게 쓰는 편지 (Feat. 린)",
+    "track_a": "너에게 쓰는 편지 _Feat_ 린_.wav",
+    "track_b": "박혜경_더더_ - Its You _1998年_.wav",
+    "attribution_score": 0.9687,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9563,
+      "mel": 0.9964,
+      "chroma": 0.98,
+      "tempo": 0.943,
+      "hnr": 0.9329,
+      "spectral_flatness": 0.9703,
+      "phase_discontinuity": 0.9976
+    }
+  },
+  {
+    "pair_id": "21",
+    "relation": "remake",
+    "ori_title": "Vaance & Deerock - Electric (feat. Robbie Rosen) [NCS Release]",
+    "comp_title": "VAANCE & Deerock - Electric (feat. Robbie Rosen) (jeonghyeon Remix) [NCS Release]",
+    "track_a": "VAANCE _ Deerock - Electric _feat_ Robbie Rosen_ _jeonghyeon Remix_ _NCS Release_.wav",
+    "track_b": "Vaance _ Deerock - Electric _feat_ Robbie Rosen_ _NCS Release_.wav",
+    "attribution_score": 0.982,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9814,
+      "mel": 0.999,
+      "chroma": 0.9962,
+      "tempo": 0.8975,
+      "hnr": 0.9706,
+      "spectral_flatness": 0.9891,
+      "phase_discontinuity": 0.9995
+    }
+  },
+  {
+    "pair_id": "22",
+    "relation": "plag",
+    "ori_title": "더 아스트로 제트 - 해변의 여인 (키보이스 해변으로 가요)원곡",
+    "comp_title": "키보이스 (특선2집) - 해변으로 가요 1970",
+    "track_a": "더 아스트로 제트 - 해변의 여인 _키보이스 해변으로 가요_원곡.wav",
+    "track_b": "키보이스 _특선2집_ - 해변으로 가요 1970.wav",
+    "attribution_score": 0.9007,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.8891,
+      "mel": 0.9959,
+      "chroma": 0.9875,
+      "tempo": 0.641,
+      "hnr": 0.6775,
+      "spectral_flatness": 0.9743,
+      "phase_discontinuity": 0.9987
+    }
+  },
+  {
+    "pair_id": "24",
+    "relation": "plag",
+    "ori_title": "Every Time You Go Away",
+    "comp_title": "임재범 - 이 밤이 지나면",
+    "track_a": "Every Time You Go Away.wav",
+    "track_b": "임재범 - 이 밤이 지나면.wav",
+    "attribution_score": 0.9773,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9893,
+      "mel": 0.9984,
+      "chroma": 0.9921,
+      "tempo": 0.7942,
+      "hnr": 0.9921,
+      "spectral_flatness": 0.9886,
+      "phase_discontinuity": 0.9981
+    }
+  },
+  {
+    "pair_id": "25",
+    "relation": "plag",
+    "ori_title": "Whitney Houston I Know Him So Well (from Chess) 1987(휘트니 휴스턴 I Know Him So Well(장필순 내 사랑인걸 표절 노래,원곡)",
+    "comp_title": "내사랑인걸",
+    "track_a": "Whitney Houston I Know Him So Well _from Chess_ 1987_휘트니 휴스턴 I Know Him So Well_장필순 내 사랑인걸 표절 노래_원곡_.wav",
+    "track_b": "내사랑인걸.wav",
+    "attribution_score": 0.9728,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9758,
+      "mel": 0.9952,
+      "chroma": 0.9509,
+      "tempo": 0.9462,
+      "hnr": 0.9658,
+      "spectral_flatness": 0.9919,
+      "phase_discontinuity": 0.9955
+    }
+  },
+  {
+    "pair_id": "27",
+    "relation": "plag",
+    "ori_title": "Inoue Yosui - Hotel Riverside ⧸ 이노우에 요수이 - 호텔 리버사이드",
+    "comp_title": "잃어버린 계절 - 벗님들(1986)",
+    "track_a": "Inoue Yosui - Hotel Riverside _ 이노우에 요수이 - 호텔 리버사이드.wav",
+    "track_b": "잃어버린 계절 - 벗님들_1986_.wav",
+    "attribution_score": 0.9686,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9825,
+      "mel": 0.9968,
+      "chroma": 0.9788,
+      "tempo": 0.8975,
+      "hnr": 0.9182,
+      "spectral_flatness": 0.9646,
+      "phase_discontinuity": 0.9976
+    }
+  },
+  {
+    "pair_id": "29",
+    "relation": "plag",
+    "ori_title": "Bobby Brown - Humpin Around",
+    "comp_title": "이승철…방황(가사)",
+    "track_a": "Bobby Brown - Humpin Around.wav",
+    "track_b": "이승철_방황_가사_.wav",
+    "attribution_score": 0.9743,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9317,
+      "mel": 0.9963,
+      "chroma": 0.9951,
+      "tempo": 1.0,
+      "hnr": 0.9458,
+      "spectral_flatness": 0.9869,
+      "phase_discontinuity": 0.9973
+    }
+  },
+  {
+    "pair_id": "30",
+    "relation": "plag",
+    "ori_title": "Me Espere",
+    "comp_title": "이승철   친구의 친구를 사랑했네 (가사 첨부)",
+    "track_a": "Me Espere.wav",
+    "track_b": "이승철   친구의 친구를 사랑했네 _가사 첨부_.wav",
+    "attribution_score": 0.9875,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9803,
+      "mel": 0.9961,
+      "chroma": 0.9812,
+      "tempo": 1.0,
+      "hnr": 0.9817,
+      "spectral_flatness": 0.9948,
+      "phase_discontinuity": 0.9967
+    }
+  },
+  {
+    "pair_id": "32",
+    "relation": "remake",
+    "ori_title": "Itoshi no Ellie",
+    "comp_title": "박상민 Ellie My Love (원곡 서던올스타) (가사 첨부)",
+    "track_a": "Itoshi no Ellie.wav",
+    "track_b": "박상민 Ellie My Love _원곡 서던올스타_ _가사 첨부_.wav",
+    "attribution_score": 0.9846,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9751,
+      "mel": 0.9969,
+      "chroma": 0.9876,
+      "tempo": 0.9922,
+      "hnr": 0.9581,
+      "spectral_flatness": 0.9953,
+      "phase_discontinuity": 0.9987
+    }
+  },
+  {
+    "pair_id": "33",
+    "relation": "plag_doubt",
+    "ori_title": "Matt Cardle - Amazing",
+    "comp_title": "Ed Sheeran - Photograph (Official Music Video)",
+    "track_a": "Ed Sheeran - Photograph _Official Music Video_.wav",
+    "track_b": "Matt Cardle - Amazing.wav",
+    "attribution_score": 0.9436,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9689,
+      "mel": 0.9967,
+      "chroma": 0.9661,
+      "tempo": 0.6811,
+      "hnr": 0.9035,
+      "spectral_flatness": 0.9691,
+      "phase_discontinuity": 0.9855
+    }
+  },
+  {
+    "pair_id": "34",
+    "relation": "plag",
+    "ori_title": "Queen - Under Pressure (Official Video)",
+    "comp_title": "Vanilla Ice - Ice Ice Baby (Official Music Video)",
+    "track_a": "Queen - Under Pressure _Official Video_.wav",
+    "track_b": "Vanilla Ice - Ice Ice Baby _Official Music Video_.wav",
+    "attribution_score": 0.9625,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9608,
+      "mel": 0.9937,
+      "chroma": 0.9868,
+      "tempo": 0.8422,
+      "hnr": 0.9303,
+      "spectral_flatness": 0.9728,
+      "phase_discontinuity": 0.9904
+    }
+  },
+  {
+    "pair_id": "35",
+    "relation": "plag_doubt",
+    "ori_title": "Dragon Night",
+    "comp_title": "[MV] Lee Mujin(이무진) _ Traffic light(신호등)",
+    "track_a": "_MV_ Lee Mujin_이무진_ _ Traffic light_신호등_.wav",
+    "track_b": "Dragon Night.wav",
+    "attribution_score": 0.9438,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9768,
+      "mel": 0.9973,
+      "chroma": 0.9693,
+      "tempo": 0.4948,
+      "hnr": 0.98,
+      "spectral_flatness": 0.9815,
+      "phase_discontinuity": 0.9991
+    }
+  },
+  {
+    "pair_id": "36",
+    "relation": "plag_doubt",
+    "ori_title": "Sara Bareilles - Brave (Official Video)",
+    "comp_title": "Katy Perry - Roar",
+    "track_a": "Katy Perry - Roar.wav",
+    "track_b": "Sara Bareilles - Brave _Official Video_.wav",
+    "attribution_score": 0.9692,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9502,
+      "mel": 0.9983,
+      "chroma": 0.9921,
+      "tempo": 0.9286,
+      "hnr": 0.917,
+      "spectral_flatness": 0.9876,
+      "phase_discontinuity": 0.9978
+    }
+  },
+  {
+    "pair_id": "37",
+    "relation": "plag",
+    "ori_title": "Joyful Noise - Official Music Video: FLAME feat. Lecrae & John Reilly",
+    "comp_title": "Katy Perry - Dark Horse (Lyrics) ft. Juicy J",
+    "track_a": "Joyful Noise - Official Music Video_ FLAME feat_ Lecrae _ John Reilly.wav",
+    "track_b": "Katy Perry - Dark Horse _Lyrics_ ft_ Juicy J.wav",
+    "attribution_score": 0.9323,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9444,
+      "mel": 0.9967,
+      "chroma": 0.979,
+      "tempo": 0.62,
+      "hnr": 0.8647,
+      "spectral_flatness": 0.9696,
+      "phase_discontinuity": 0.9948
+    }
+  },
+  {
+    "pair_id": "39",
+    "relation": "plag_doubt",
+    "ori_title": "G.R.L. - Ugly Heart",
+    "comp_title": "Little Mix - Shout Out to My Ex (Official Video)",
+    "track_a": "G_R_L_ - Ugly Heart.wav",
+    "track_b": "Little Mix - Shout Out to My Ex _Official Video_.wav",
+    "attribution_score": 0.9689,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9634,
+      "mel": 0.9958,
+      "chroma": 0.9666,
+      "tempo": 0.9946,
+      "hnr": 0.8946,
+      "spectral_flatness": 0.9938,
+      "phase_discontinuity": 0.9974
+    }
+  },
+  {
+    "pair_id": "40",
+    "relation": "plag_doubt",
+    "ori_title": "Astrud Gilberto - Maria Quiet",
+    "comp_title": "Smoke On The Water (2024 Remastered)",
+    "track_a": "Astrud Gilberto - Maria Quiet.wav",
+    "track_b": "Smoke On The Water _2024 Remastered_.wav",
+    "attribution_score": 0.9016,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.957,
+      "mel": 0.9946,
+      "chroma": 0.9841,
+      "tempo": 0.0865,
+      "hnr": 0.8971,
+      "spectral_flatness": 0.9918,
+      "phase_discontinuity": 0.9983
+    }
+  },
+  {
+    "pair_id": "41",
+    "relation": "plag_doubt",
+    "ori_title": "[PV]  GLAY ⧸ More Than Love",
+    "comp_title": "Buzz(버즈) - Funny Rock",
+    "track_a": "_PV_  GLAY _ More Than Love.wav",
+    "track_b": "Buzz_버즈_ - Funny Rock.wav",
+    "attribution_score": 0.9815,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9701,
+      "mel": 0.997,
+      "chroma": 0.9912,
+      "tempo": 0.9228,
+      "hnr": 0.9816,
+      "spectral_flatness": 0.9922,
+      "phase_discontinuity": 0.9994
+    }
+  },
+  {
+    "pair_id": "42",
+    "relation": "plag_doubt",
+    "ori_title": "Warren Zevon - Werewolves Of London (Official Music Video) [HD]",
+    "comp_title": "Kid Rock - All Summer Long [Official Music Video]",
+    "track_a": "Kid Rock - All Summer Long _Official Music Video_.wav",
+    "track_b": "Warren Zevon - Werewolves Of London _Official Music Video_ _HD_.wav",
+    "attribution_score": 0.9822,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.966,
+      "mel": 0.9975,
+      "chroma": 0.9943,
+      "tempo": 1.0,
+      "hnr": 0.9486,
+      "spectral_flatness": 0.9843,
+      "phase_discontinuity": 0.9969
+    }
+  },
+  {
+    "pair_id": "43",
+    "relation": "plag",
+    "ori_title": "Maroon 5 - This Love (Official Music Video)",
+    "comp_title": "이승기(Lee Seung Gi) 가면 (가사 첨부)",
+    "track_a": "Maroon 5 - This Love _Official Music Video_.wav",
+    "track_b": "이승기_Lee Seung Gi_ 가면 _가사 첨부_.wav",
+    "attribution_score": 0.9779,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9419,
+      "mel": 0.9927,
+      "chroma": 0.987,
+      "tempo": 1.0,
+      "hnr": 0.9804,
+      "spectral_flatness": 0.9822,
+      "phase_discontinuity": 0.9977
+    }
+  },
+  {
+    "pair_id": "44",
+    "relation": "plag_doubt",
+    "ori_title": "Crazy Frog - Axel F (Official Video)",
+    "comp_title": "[DANCE] 싸이 (PSY) - 챔피언",
+    "track_a": "_DANCE_ 싸이 _PSY_ - 챔피언.wav",
+    "track_b": "Crazy Frog - Axel F _Official Video_.wav",
+    "attribution_score": 0.9358,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9343,
+      "mel": 0.998,
+      "chroma": 0.9863,
+      "tempo": 0.6909,
+      "hnr": 0.8314,
+      "spectral_flatness": 0.991,
+      "phase_discontinuity": 0.9991
+    }
+  },
+  {
+    "pair_id": "45",
+    "relation": "remake",
+    "ori_title": "Sting - Shape of My Heart (Official Music Video)",
+    "comp_title": "Juice WRLD - Lucid Dreams (Official Music Video)",
+    "track_a": "Juice WRLD - Lucid Dreams _Official Music Video_.wav",
+    "track_b": "Sting - Shape of My Heart _Official Music Video_.wav",
+    "attribution_score": 0.9743,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9624,
+      "mel": 0.9962,
+      "chroma": 0.9903,
+      "tempo": 1.0,
+      "hnr": 0.8963,
+      "spectral_flatness": 0.9904,
+      "phase_discontinuity": 0.9944
+    }
+  },
+  {
+    "pair_id": "46",
+    "relation": "remake",
+    "ori_title": "Alice Deejay - Better Off Alone (Official Video)",
+    "comp_title": "Play Hard (feat. Ne-Yo & Akon) (New Edit)",
+    "track_a": "Alice Deejay - Better Off Alone _Official Video_.wav",
+    "track_b": "Play Hard _feat_ Ne-Yo _ Akon_ _New Edit_.wav",
+    "attribution_score": 0.9658,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9434,
+      "mel": 0.9959,
+      "chroma": 0.9914,
+      "tempo": 0.8867,
+      "hnr": 0.9409,
+      "spectral_flatness": 0.9788,
+      "phase_discontinuity": 0.9964
+    }
+  },
+  {
+    "pair_id": "47",
+    "relation": "plag",
+    "ori_title": "忍者 お祭り忍者",
+    "comp_title": "[4K] 룰라 - 천상유애 MV 1995 4K AI Upscaling",
+    "track_a": "_4K_ 룰라 - 천상유애 MV 1995 4K AI Upscaling.wav",
+    "track_b": "忍者 お祭り忍者.wav",
+    "attribution_score": 0.9751,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9698,
+      "mel": 0.9973,
+      "chroma": 0.9821,
+      "tempo": 0.9335,
+      "hnr": 0.949,
+      "spectral_flatness": 0.9828,
+      "phase_discontinuity": 0.9988
+    }
+  },
+  {
+    "pair_id": "49",
+    "relation": "plag_doubt",
+    "ori_title": "Major Lazer - Sua Cara (Feat. Anitta & Pabllo Vittar) (Official Music Video)",
+    "comp_title": "DJ Snake - Taki Taki ft. Selena Gomez, Ozuna, Cardi B (Official Music Video)",
+    "track_a": "DJ Snake - Taki Taki ft_ Selena Gomez_ Ozuna_ Cardi B _Official Music Video_.wav",
+    "track_b": "Major Lazer - Sua Cara _Feat_ Anitta _ Pabllo Vittar_ _Official Music Video_.wav",
+    "attribution_score": 0.9454,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9633,
+      "mel": 0.9972,
+      "chroma": 0.9514,
+      "tempo": 0.8985,
+      "hnr": 0.8019,
+      "spectral_flatness": 0.9823,
+      "phase_discontinuity": 0.9953
+    }
+  },
+  {
+    "pair_id": "50",
+    "relation": "plag_doubt",
+    "ori_title": "The Police - Message In A Bottle (Official Music Video)",
+    "comp_title": "Rihanna-Love without Tragedy(only)",
+    "track_a": "Rihanna-Love without Tragedy_only_.wav",
+    "track_b": "The Police - Message In A Bottle _Official Music Video_.wav",
+    "attribution_score": 0.9301,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9758,
+      "mel": 0.9964,
+      "chroma": 0.9894,
+      "tempo": 0.62,
+      "hnr": 0.7509,
+      "spectral_flatness": 0.988,
+      "phase_discontinuity": 0.9985
+    }
+  },
+  {
+    "pair_id": "51",
+    "relation": "plag_doubt",
+    "ori_title": "Excel - Tapping Into the Emotional Void",
+    "comp_title": "Metallica: Enter Sandman (Official Music Video)",
+    "track_a": "Excel - Tapping Into the Emotional Void.wav",
+    "track_b": "Metallica_ Enter Sandman _Official Music Video_.wav",
+    "attribution_score": 0.933,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9448,
+      "mel": 0.9969,
+      "chroma": 0.9847,
+      "tempo": 0.549,
+      "hnr": 0.8819,
+      "spectral_flatness": 0.9907,
+      "phase_discontinuity": 0.9993
+    }
+  },
+  {
+    "pair_id": "52",
+    "relation": "remake",
+    "ori_title": "中島美嘉 (나카시마 미카)-雪の華 (눈의 꽃)",
+    "comp_title": "박효신-눈의 꽃",
+    "track_a": "中島美嘉 _나카시마 미카_-雪の華 _눈의 꽃_.wav",
+    "track_b": "박효신-눈의 꽃.wav",
+    "attribution_score": 0.9772,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9836,
+      "mel": 0.9967,
+      "chroma": 0.9549,
+      "tempo": 0.9927,
+      "hnr": 0.9444,
+      "spectral_flatness": 0.9947,
+      "phase_discontinuity": 0.9982
+    }
+  },
+  {
+    "pair_id": "53",
+    "relation": "remake",
+    "ori_title": "Alain Barrière-Un Poète",
+    "comp_title": "배인숙-누구라도 그러하듯이",
+    "track_a": "Alain Barrière-Un Poète.wav",
+    "track_b": "배인숙-누구라도 그러하듯이.wav",
+    "attribution_score": 0.9583,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9675,
+      "mel": 0.9961,
+      "chroma": 0.9643,
+      "tempo": 0.7683,
+      "hnr": 0.9597,
+      "spectral_flatness": 0.9769,
+      "phase_discontinuity": 0.9994
+    }
+  },
+  {
+    "pair_id": "54",
+    "relation": "remake",
+    "ori_title": "Gloria Gaynor-I Will Survive",
+    "comp_title": "진주-난 괜찮아",
+    "track_a": "Gloria Gaynor-I Will Survive.wav",
+    "track_b": "진주-난 괜찮아.wav",
+    "attribution_score": 0.9433,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.8895,
+      "mel": 0.9969,
+      "chroma": 0.9793,
+      "tempo": 0.9068,
+      "hnr": 0.8594,
+      "spectral_flatness": 0.9884,
+      "phase_discontinuity": 0.9972
+    }
+  },
+  {
+    "pair_id": "55",
+    "relation": "remake",
+    "ori_title": "X Japan-Tears",
+    "comp_title": "엠씨더맥스-잠시만 안녕",
+    "track_a": "X Japan-Tears.wav",
+    "track_b": "엠씨더맥스-잠시만 안녕.wav",
+    "attribution_score": 0.9778,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9637,
+      "mel": 0.9962,
+      "chroma": 0.9689,
+      "tempo": 0.9856,
+      "hnr": 0.9656,
+      "spectral_flatness": 0.9948,
+      "phase_discontinuity": 0.9986
+    }
+  },
+  {
+    "pair_id": "56",
+    "relation": "remake",
+    "ori_title": "平井堅 (히라이 켄)-瞳をとじて (눈을 감고서)",
+    "comp_title": "정재욱-가만히 눈을 감고",
+    "track_a": "平井堅 _히라이 켄_-瞳をとじて _눈을 감고서_.wav",
+    "track_b": "정재욱-가만히 눈을 감고.wav",
+    "attribution_score": 0.9904,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9846,
+      "mel": 0.9985,
+      "chroma": 0.9949,
+      "tempo": 0.9797,
+      "hnr": 0.9803,
+      "spectral_flatness": 0.995,
+      "phase_discontinuity": 0.999
+    }
+  },
+  {
+    "pair_id": "57",
+    "relation": "remake",
+    "ori_title": "Lee Oskar, Teddy Andreas-My Love, Beside Me",
+    "comp_title": "김현식-내 사랑 내 곁에",
+    "track_a": "Lee Oskar_ Teddy Andreas-My Love_ Beside Me.wav",
+    "track_b": "김현식-내 사랑 내 곁에.wav",
+    "attribution_score": 0.9817,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9782,
+      "mel": 0.9984,
+      "chroma": 0.9952,
+      "tempo": 0.9249,
+      "hnr": 0.9523,
+      "spectral_flatness": 0.998,
+      "phase_discontinuity": 0.9986
+    }
+  },
+  {
+    "pair_id": "58",
+    "relation": "remake",
+    "ori_title": "misia-つつみ込むように",
+    "comp_title": "SES-감싸안으며",
+    "track_a": "misia-つつみ込むように.wav",
+    "track_b": "SES-감싸안으며.wav",
+    "attribution_score": 0.9673,
+    "interpretation": "Very likely attribution — almost certainly an AI cover",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9665,
+      "mel": 0.9971,
+      "chroma": 0.9931,
+      "tempo": 0.7576,
+      "hnr": 0.9772,
+      "spectral_flatness": 0.9882,
+      "phase_discontinuity": 0.9967
+    }
+  }
+]
