@@ -135,6 +135,9 @@ Mean attribution score on related pairs: **0.9605** (range: 0.90–0.99)
 
 ```
 .
+├── Assesment/
+│   ├── IN-Hiring Assesment - AI Generated song detection.pdf  # Original assessment brief
+│   └── report.pdf                                             # Technical report (PDF)
 ├── compare_tracks.py        # CLI entry point
 ├── feature_extractor.py     # Audio loading, chunking, feature extraction
 ├── similarity_engine.py     # Attribution score + AI detection score
@@ -146,7 +149,7 @@ Mean attribution score on related pairs: **0.9605** (range: 0.90–0.99)
 ├── evaluation_metrics.json  # Precision/Recall/F1 at multiple thresholds
 ├── data_exploration.ipynb   # Dataset analysis (Parts 1–5)
 ├── demo_notebook.ipynb      # End-to-end demo with real audio
-├── report.md                # Technical report
+├── report.md                # Technical report (source)
 └── requirements.txt         # Dependencies
 ```
 
