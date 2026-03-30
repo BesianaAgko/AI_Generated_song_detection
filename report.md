@@ -101,8 +101,8 @@ A naive approach would analyze only the first 30 seconds of each track. This sys
 ### Score interpretation
 | Score | Interpretation |
 |---|---|
-| ≥ 0.85 | Very likely AI attribution — almost certainly an AI cover |
-| 0.70–0.85 | Probable attribution — significant similarity |
+| ≥ 0.85 | Strong evidence of relatedness — high pairwise similarity |
+| 0.70–0.85 | Likely related tracks — significant similarity detected |
 | 0.50–0.70 | Ambiguous — moderate similarity |
 | 0.30–0.50 | Low similarity — likely unrelated |
 | < 0.30 | Unrelated tracks |
