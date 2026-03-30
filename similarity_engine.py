@@ -93,15 +93,15 @@ def ai_detection_score(features: list[ChunkFeatures]) -> dict:
         ai_score = round(ai_prob, 4)
 
         if ai_score >= 0.80:
-            interpretation = "AI-generated (high confidence)"
-        elif ai_score >= 0.60:
             interpretation = "Likely AI-generated"
+        elif ai_score >= 0.60:
+            interpretation = "Possibly AI-generated"
         elif ai_score >= 0.40:
             interpretation = "Ambiguous — borderline case"
         elif ai_score >= 0.20:
             interpretation = "Likely human-made"
         else:
-            interpretation = "Human-made (high confidence)"
+            interpretation = "Likely human-made"
 
         return {
             "ai_score":      ai_score,
@@ -290,9 +290,9 @@ def compare_tracks(
 
     # Score interpretation
     if attribution_score >= 0.85:
-        interpretation = "Very likely attribution — tracks are almost certainly related"
+        interpretation = "Strong evidence of relatedness — high pairwise similarity"
     elif attribution_score >= 0.70:
-        interpretation = "Probable attribution — significant similarity detected"
+        interpretation = "Likely related tracks — significant similarity detected"
     elif attribution_score >= 0.50:
         interpretation = "Moderate similarity — ambiguous"
     elif attribution_score >= 0.30:
