@@ -182,11 +182,98 @@ python compare_tracks.py "path/to/original.wav" "path/to/cover.wav"
 
 ## Datasets
 
+All three datasets are excluded from the repository (`.gitignore`). Below are the instructions to reproduce the local setup.
+
 | Dataset | Role | Size |
 |---|---|---|
 | [MIPPIA SMP](https://github.com/Mippia/smp_dataset) | Attribution evaluation — labeled (original, similar) pairs | 158 pairs |
 | [SONICS](https://huggingface.co/datasets/awsaf49/sonics) | AI-generated tracks (Suno/Udio) for detector training | 97k+ tracks |
 | [FakeMusicCaps](https://github.com/LucasPLopes/FakeMusicCaps) | Text-to-music clips from 5 models for artifact analysis | 55k clips |
+
+### MIPPIA SMP
+
+Audio files are downloaded from YouTube via the dataset's own `download.py` script using `yt-dlp`.
+
+```bash
+# 1. Clone the dataset repo
+git clone https://github.com/Mippia/smp_dataset.git
+
+# 2. Install dependencies
+pip install yt-dlp pandas ffmpeg-python
+
+# 3. Run the download script (downloads all pairs as WAV)
+cd smp_dataset
+python download.py
+```
+
+Expected structure after download:
+```
+smp_dataset/
+├── Final_dataset_pairs.csv
+└── final_dataset/
+    ├── 1/
+    │   ├── Summer Dream.wav
+    │   └── 김민종...wav
+    ├── 2/
+    │   └── ...
+    └── ...
+```
+
+> Of 158 pairs, ~62 were fully downloadable at time of evaluation (YouTube availability varies).
+
+---
+
+### SONICS
+
+Hosted on HuggingFace. Can be used in streaming mode (no download) or downloaded locally.
+
+```python
+# Streaming (metadata only — no disk space needed)
+from datasets import load_dataset
+sonics = load_dataset("awsaf49/sonics", split="train", streaming=True)
+
+# Full local download (~several GB)
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id="awsaf49/sonics",
+    repo_type="dataset",
+    local_dir="data/sonics"
+)
+```
+
+Audio files are stored as zip archives (`part_01.zip` … `part_N.zip`) under `data/sonics/fake_songs/`. The system samples from these zips directly without full extraction.
+
+---
+
+### FakeMusicCaps
+
+Download the zip from the [FakeMusicCaps repository](https://github.com/LucasPLopes/FakeMusicCaps) and place it at `data/FakeMusicCaps/FakeMusicCaps.zip`.
+
+```
+data/
+└── FakeMusicCaps/
+    └── FakeMusicCaps.zip   ← place here
+```
+
+The system extracts a sample (~20 files per model) automatically on first use. To extract manually:
+
+```python
+import zipfile
+from pathlib import Path
+
+with zipfile.ZipFile("data/FakeMusicCaps/FakeMusicCaps.zip") as z:
+    z.extractall("data/FakeMusicCaps/")
+```
+
+Expected structure after extraction:
+```
+data/FakeMusicCaps/
+├── audioldm2/
+├── MusicGen_medium/
+├── musicldm/
+├── mustango/
+└── stable_audio_open/
+```
 
 ---
 
