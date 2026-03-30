@@ -2,7 +2,7 @@
 feature_extractor.py
 --------------------
 Extracts audio features from a track in chunks.
-Uses: librosa (MFCCs, chroma, spectral), CLAP (neural embeddings)
+Uses: librosa (MFCCs, mel-spectrogram, chroma, spectral), CLAP (neural embeddings)
 """
 
 import numpy as np
@@ -14,10 +14,11 @@ warnings.filterwarnings("ignore")
 
 
 # ── Constants ────────────────────────────────────────────────────────────────
-SAMPLE_RATE   = 22050   # Hz — standard for music analysis
+SAMPLE_RATE   = 22050   # Hz - standard for music analysis
 CHUNK_SEC     = 30      # window size in seconds
 HOP_SEC       = 10      # overlap: each new chunk starts 10s after the previous one
 N_MFCC        = 40      # number of MFCC coefficients
+N_MELS        = 64      # mel bands for log-mel summary features
 N_CHROMA      = 12      # 12 pitch classes (C, D, E, ...)
 
 
@@ -31,6 +32,8 @@ class ChunkFeatures:
     # Timbre
     mfcc_mean:        np.ndarray = field(default_factory=lambda: np.array([]))  # (40,)
     mfcc_std:         np.ndarray = field(default_factory=lambda: np.array([]))  # (40,)
+    mel_mean:         np.ndarray = field(default_factory=lambda: np.array([]))  # (64,)
+    mel_std:          np.ndarray = field(default_factory=lambda: np.array([]))  # (64,)
     spectral_centroid:float = 0.0
     spectral_flatness:float = 0.0   # AI artifact detector
 
@@ -42,7 +45,7 @@ class ChunkFeatures:
     hnr:              float = 0.0   # Harmonic-to-Noise Ratio
     phase_discontinuity: float = 0.0
 
-    # Neural embedding (CLAP) — optional, populated later
+    # Neural embedding (CLAP) - optional, populated later
     clap_embedding:   Optional[np.ndarray] = None  # (512,)
 
 
@@ -171,6 +174,14 @@ class FeatureExtractor:
         # MFCCs
         mfcc = librosa.feature.mfcc(y=chunk_audio, sr=SAMPLE_RATE, n_mfcc=N_MFCC)
 
+        # Log-mel spectrogram summary
+        mel_spec = librosa.feature.melspectrogram(
+            y=chunk_audio,
+            sr=SAMPLE_RATE,
+            n_mels=N_MELS,
+        )
+        log_mel = librosa.power_to_db(mel_spec, ref=np.max)
+
         # Chroma (harmonic structure)
         chroma = librosa.feature.chroma_stft(y=chunk_audio, sr=SAMPLE_RATE)
 
@@ -187,6 +198,8 @@ class FeatureExtractor:
             end_sec           = end_s,
             mfcc_mean         = np.mean(mfcc, axis=1),
             mfcc_std          = np.std(mfcc, axis=1),
+            mel_mean          = np.mean(log_mel, axis=1),
+            mel_std           = np.std(log_mel, axis=1),
             spectral_centroid = float(np.mean(spec_centroid)),
             spectral_flatness = float(np.mean(spec_flatness)),
             chroma_mean       = np.mean(chroma, axis=1),
