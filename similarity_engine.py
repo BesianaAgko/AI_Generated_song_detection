@@ -12,8 +12,9 @@ from feature_extractor import ChunkFeatures
 # ── Weights for each feature group ───────────────────────────────────────────
 # Sum = 1.0
 WEIGHTS = {
-    "clap":               0.40,  # Neural embedding — πιο σημαντικό
-    "mfcc":               0.20,  # Timbre
+    "clap":               0.35,  # Neural embedding — πιο σημαντικό
+    "mfcc":               0.15,  # Timbre
+    "mel":                0.10,  # Log-mel spectrogram summary
     "chroma":             0.15,  # Harmony / melody
     "tempo":              0.05,  # Rhythm
     "hnr":                0.08,  # Harmonic-to-Noise Ratio (AI artifact)
@@ -55,6 +56,11 @@ def _chunk_similarity(fa: ChunkFeatures, fb: ChunkFeatures) -> dict[str, float]:
     mfcc_a = np.concatenate([fa.mfcc_mean, fa.mfcc_std])
     mfcc_b = np.concatenate([fb.mfcc_mean, fb.mfcc_std])
     scores["mfcc"] = _cosine(mfcc_a, mfcc_b)
+
+    # Log-mel spectrogram (combine mean and std)
+    mel_a = np.concatenate([fa.mel_mean, fa.mel_std])
+    mel_b = np.concatenate([fb.mel_mean, fb.mel_std])
+    scores["mel"] = _cosine(mel_a, mel_b)
 
     # Chroma
     scores["chroma"] = _cosine(fa.chroma_mean, fb.chroma_mean)
