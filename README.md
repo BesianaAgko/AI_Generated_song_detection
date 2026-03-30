@@ -1,105 +1,224 @@
-# AI-Original Pairwise Similarity
+# AI-Generated Song Detection & Attribution
 
-A system for detecting AI-generated audio covers via pairwise similarity scoring.
+A Python system that takes two full-length audio files and outputs:
+1. **Attribution Score** — likelihood that Track B is derived from Track A
+2. **AI Detection Score** — likelihood that a track is AI-generated (Suno, Udio, etc.)
 
-## Installation
+---
 
-```bash
-pip install -r requirements.txt
-```
-
-
-## Usage
+## Quick Start
 
 ```bash
-# Basic comparison (no neural embeddings)
+# Compare two tracks
 python compare_tracks.py original.mp3 suspected_cover.mp3
 
 # With CLAP neural embeddings (more accurate, requires ~1GB download)
 python compare_tracks.py original.mp3 suspected_cover.mp3 --clap
 
 # JSON output
-python compare_tracks.py original.mp3 suspected_cover.mp3 --clap --json
-
-# Evaluate only complete MIPPIA SMP pairs
-python evaluate_mippia.py
-
-# Quick dry run on the first 5 complete pairs
-python evaluate_mippia.py --limit 5
+python compare_tracks.py original.mp3 suspected_cover.mp3 --json
 ```
 
-## Example Output
-
+**Example output:**
 ```
+Track A: original.mp3
+Track B: suspected_cover.mp3
+
 ==================================================
-Attribution Score: 0.823
-Interpretation: Probable attribution — significant similarity
+Attribution Score: 0.961 — Strong evidence of relatedness — high pairwise similarity detected
 
 Per-feature breakdown:
-  clap              : 0.891  ██████████████████
-  mfcc              : 0.812  ████████████████
-  chroma            : 0.756  ███████████████
-  tempo             : 0.950  ███████████████████
-  hnr               : 0.634  ████████████
-  spectral_flatness : 0.701  ██████████████
-  phase_discontinuity: 0.580 ███████████
+  mfcc    : 0.979  ████████████████████
+  mel     : 0.997  ████████████████████
+  chroma  : 0.984  ████████████████████
+  tempo   : 0.784  ████████████████
+  hnr     : 0.889  █████████████████
+  ...
+==================================================
+
+AI Detection — Track A: 0.12 → Likely human-made  [trained_classifier]
+AI Detection — Track B: 0.84 → Likely AI-generated [trained_classifier]
 ==================================================
 ```
 
-## Score Interpretation
+---
 
-| Score | Interpretation |
+## System Architecture
+
+```
+Track A                           Track B
+   │                                 │
+   ▼                                 ▼
+librosa.load → 22050Hz mono     librosa.load → 22050Hz mono
+   │                                 │
+   ▼                                 ▼
+Chunking: 30s windows, 10s hop  Chunking: 30s windows, 10s hop
+   │                                 │
+   ▼                                 ▼
+Feature Extraction               Feature Extraction
+  ├─ MFCCs (40 coefficients)       ├─ MFCCs (40)
+  ├─ Log-Mel Spectrogram (64)      ├─ Log-Mel (64)
+  ├─ Chroma (12 pitch classes)     ├─ Chroma (12)
+  ├─ Tempo (BPM)                   ├─ Tempo
+  ├─ HNR (Harmonic-to-Noise)       ├─ HNR
+  ├─ Spectral Flatness             ├─ Spectral Flatness
+  ├─ Phase Discontinuity           ├─ Phase Discontinuity
+  └─ CLAP embedding (512-dim)*     └─ CLAP embedding*
+   │                                 │
+   └──────────────┬──────────────────┘
+                  ▼
+        Similarity Engine
+     Best-match per chunk strategy
+     Weighted cosine + scalar similarity
+                  │
+        ┌─────────┴──────────┐
+        ▼                    ▼
+  Attribution Score     AI Detection Score
+     (0.0 – 1.0)      Logistic Regression
+                       trained on 255 tracks
+                         (CV F1 = 0.85)
+```
+
+*CLAP is optional — use `--clap` flag.
+
+---
+
+## Window-Bias Prevention
+
+A naive approach analyzes only the first 30 seconds. This system avoids that through:
+
+1. **Overlapping chunks**: 30s windows with 10s hop → a 3-minute track produces ~15 chunks covering the entire audio
+2. **Best-match alignment**: Each chunk of Track A is matched against *all* chunks of Track B. The final score is the mean of all best matches — handling tempo shifts, reordering, and intro/outro differences
+
+---
+
+## AI Detection (Task 1)
+
+The `ai_detection_score()` function uses a trained **Logistic Regression classifier**:
+
+| | Value |
 |---|---|
-| ≥ 0.85 | Very likely AI attribution — almost certainly an AI cover |
-| 0.70–0.85 | Probable attribution — significant similarity |
-| 0.50–0.70 | Ambiguous — moderate similarity |
-| 0.30–0.50 | Low similarity — likely unrelated |
-| < 0.30 | Unrelated tracks |
+| Training samples | 255 (154 human + 101 AI) |
+| Human source | MIPPIA SMP dataset |
+| AI source | FakeMusicCaps + SONICS (Suno/Udio) |
+| Features | spectral_flatness, zcr, mfcc1, spectral_centroid, hnr, tempo, phase_discontinuity |
+| Cross-validation | 5-fold stratified |
+| **CV F1** | **0.85 ± 0.06** |
+| **CV Recall** | **0.96 ± 0.08** |
 
-## Architecture
+Key discriminating feature: `spectral_flatness` (coefficient: -3.64) — AI generators produce near-zero spectral flatness, while human recordings show higher variance.
+
+---
+
+## Attribution (Task 2 — Bonus)
+
+Evaluated on **51 complete pairs** from the MIPPIA SMP dataset:
+
+| Relation | Count |
+|---|---|
+| plag | 21 |
+| plag_doubt | 16 |
+| remake | 13 |
+
+| Metric | Value (threshold=0.90) |
+|---|---|
+| Precision | 0.879 |
+| **Recall** | **1.000** |
+| **F1** | **0.936** |
+| Accuracy | 0.931 |
+
+Mean attribution score on related pairs: **0.9605** (range: 0.90–0.99)
+
+---
+
+## Project Structure
 
 ```
-Track A (original)          Track B (suspected AI)
-      │                              │
-      ▼                              ▼
- Preprocessing               Preprocessing
- (22050Hz, mono)             (22050Hz, mono)
-      │                              │
-      ▼                              ▼
-  Chunking                      Chunking
- (30s window, 10s hop)        (30s window, 10s hop)
-      │                              │
-      ▼                              ▼
-Feature extraction           Feature extraction
-  - MFCCs (40)                 - MFCCs (40)
-  - Chroma (12)                - Chroma (12)
-  - HNR, phase                 - HNR, phase
-  - Spectral flatness          - Spectral flatness
-  - CLAP (512)*                - CLAP (512)*
-      │                              │
-      └──────────┬───────────────────┘
-                 ▼
-        Similarity engine
-        (best-match per chunk)
-                 │
-                 ▼
-        Attribution Score (0–1)
+.
+├── compare_tracks.py        # CLI entry point
+├── feature_extractor.py     # Audio loading, chunking, feature extraction
+├── similarity_engine.py     # Attribution score + AI detection score
+├── train_ai_detector.py     # Train Logistic Regression AI detector
+├── evaluate_mippia.py       # Run attribution on full MIPPIA dataset
+├── evaluate_attribution.py  # Precision/Recall/F1 evaluation
+├── ai_detector_model.pkl    # Trained model (generated by train_ai_detector.py)
+├── mippia_results.json      # Attribution results on MIPPIA pairs
+├── evaluation_metrics.json  # Precision/Recall/F1 at multiple thresholds
+├── data_exploration.ipynb   # Dataset analysis (Parts 1–5)
+├── demo_notebook.ipynb      # End-to-end demo with real audio
+├── report.md                # Technical report
+└── requirements.txt         # Dependencies
 ```
 
-*CLAP requires `--clap` flag.
+---
+
+## Installation
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+
+## Running the Full Pipeline
+
+```bash
+# 1. Train the AI detector (run once)
+python train_ai_detector.py
+
+# 2. Evaluate attribution on MIPPIA dataset
+python evaluate_mippia.py
+
+# 3. Compute precision/recall/F1
+python evaluate_attribution.py
+
+# 4. Compare specific tracks
+python compare_tracks.py "path/to/original.wav" "path/to/cover.wav"
+```
+
+---
 
 ## Datasets
 
-- **SONICS**: `awsaf49/sonics` on HuggingFace (97k+ AI-generated tracks from Suno/Udio)
-- **FakeMusicCaps**: Fine-grained text-to-music artifact analysis
-- **MIPPIA SMP**: Attribution pairs for melodic similarity evaluation
+| Dataset | Role | Size |
+|---|---|---|
+| [MIPPIA SMP](https://github.com/Mippia/smp_dataset) | Attribution evaluation — labeled (original, similar) pairs | 158 pairs |
+| [SONICS](https://huggingface.co/datasets/awsaf49/sonics) | AI-generated tracks (Suno/Udio) for detector training | 97k+ tracks |
+| [FakeMusicCaps](https://github.com/LucasPLopes/FakeMusicCaps) | Text-to-music clips from 5 models for artifact analysis | 55k clips |
 
-## Files
+---
 
-| File | Description |
-|------|-------------|
-| `feature_extractor.py` | Audio loading, chunking, feature extraction |
-| `similarity_engine.py` | Pairwise comparison, Attribution Score computation |
-| `compare_tracks.py` | CLI entry point |
-| `demo_notebook.ipynb` | End-to-end demo with synthetic audio signals |
-| `report.md` | Full technical report |
+## Feature Engineering
+
+| Feature | Dim | Rationale |
+|---|---|---|
+| MFCCs (mean + std) | 80 | Timbral texture — primary audio fingerprint |
+| Log-Mel Spectrogram | 128 | Frequency content summary |
+| Chroma | 12 | Pitch-class profile — melody/harmony |
+| Tempo | 1 | Rhythm; AI covers often preserve original BPM |
+| HNR | 1 | AI generators produce characteristic harmonic signatures |
+| Spectral Flatness | 1 | Near-zero in AI output; higher variance in human recordings |
+| Phase Discontinuity | 1 | AI vocoders introduce unnatural STFT phase jumps |
+| CLAP embedding* | 512 | Semantic-level similarity (strongest signal) |
+
+---
+
+## Limitations
+
+- **Training set size**: AI detector trained on 255 samples — larger dataset would improve generalization
+- **No tempo normalization**: Significantly sped-up/slowed-down covers may score lower
+- **CLAP optional**: Without neural embeddings, purely spectral features are used
+- **Attribution ≠ AI detection**: High attribution score means the tracks are related, not necessarily that one is AI-generated
+
+---
+
+## Design Decisions
+
+| Decision | Rationale | Trade-off |
+|---|---|---|
+| Best-match per chunk | Handles reordering, tempo shifts | May overestimate for partial matches |
+| Logistic Regression | Interpretable, fast, calibrated probabilities | Less powerful than deep models |
+| Cosine similarity | Scale-invariant for high-dim embeddings | Loses magnitude info |
+| CLAP optional | Works without GPU | Weaker without neural embeddings |
