@@ -9,6 +9,90 @@ from sklearn.metrics.pairwise import cosine_similarity
 from feature_extractor import ChunkFeatures
 
 
+# ── AI vs Human reference profiles ───────────────────────────────────────────
+# Derived empirically: SONICS (30 AI tracks) vs MIPPIA features/ (154 human tracks)
+_AI_PROFILE = {
+    "spectral_flatness":   {"mean": 0.000939, "std": 0.001659},
+    "phase_discontinuity": {"mean": 1.5683,   "std": 0.0046},
+    "hnr":                 {"mean": 5.55,      "std": 3.04},
+}
+_HUMAN_PROFILE = {
+    "spectral_flatness":   {"mean": 0.025170,  "std": 0.019234},
+    "phase_discontinuity": {"mean": 1.5628,    "std": 0.014614},
+    "hnr":                 {"mean": 4.93,       "std": 2.734},
+}
+# Weights per feature for AI detection (spectral_flatness is strongest discriminator)
+_AI_DETECTION_WEIGHTS = {
+    "spectral_flatness":   0.60,
+    "phase_discontinuity": 0.30,
+    "hnr":                 0.10,
+}
+
+
+def _gaussian_pdf(x: float, mean: float, std: float) -> float:
+    """Gaussian probability density (unnormalized)."""
+    return float(np.exp(-0.5 * ((x - mean) / (std + 1e-10)) ** 2))
+
+
+def ai_detection_score(features: list[ChunkFeatures]) -> dict:
+    """
+    Estimates the likelihood that a track is AI-generated.
+
+    Compares per-chunk features against empirical AI (SONICS) and
+    human (MIPPIA) reference profiles using Gaussian likelihood ratios.
+
+    Returns:
+        dict with:
+          - ai_score: float 0–1  (1.0 = almost certainly AI-generated)
+          - interpretation: str
+          - feature_scores: per-feature AI likelihood
+    """
+    if not features:
+        return {"ai_score": 0.0, "interpretation": "No features", "feature_scores": {}}
+
+    # Aggregate scalar features across all chunks
+    sf_vals   = [f.spectral_flatness   for f in features]
+    pd_vals   = [f.phase_discontinuity for f in features]
+    hnr_vals  = [f.hnr                 for f in features]
+
+    track_vals = {
+        "spectral_flatness":   float(np.mean(sf_vals)),
+        "phase_discontinuity": float(np.mean(pd_vals)),
+        "hnr":                 float(np.mean(hnr_vals)),
+    }
+
+    # Per-feature Gaussian likelihood ratio: P(AI) / (P(AI) + P(human))
+    feature_scores = {}
+    for feat, val in track_vals.items():
+        p_ai    = _gaussian_pdf(val, _AI_PROFILE[feat]["mean"],    _AI_PROFILE[feat]["std"])
+        p_human = _gaussian_pdf(val, _HUMAN_PROFILE[feat]["mean"], _HUMAN_PROFILE[feat]["std"])
+        feature_scores[feat] = float(p_ai / (p_ai + p_human + 1e-10))
+
+    # Weighted combination
+    ai_score = float(np.clip(
+        sum(feature_scores[f] * w for f, w in _AI_DETECTION_WEIGHTS.items()),
+        0.0, 1.0
+    ))
+
+    if ai_score >= 0.80:
+        interpretation = "Very likely AI-generated"
+    elif ai_score >= 0.60:
+        interpretation = "Probably AI-generated"
+    elif ai_score >= 0.40:
+        interpretation = "Ambiguous — could be AI or human"
+    elif ai_score >= 0.20:
+        interpretation = "Probably human-made"
+    else:
+        interpretation = "Very likely human-made"
+
+    return {
+        "ai_score":      round(ai_score, 4),
+        "interpretation": interpretation,
+        "feature_scores": {k: round(v, 4) for k, v in feature_scores.items()},
+        "track_means":   {k: round(v, 6) for k, v in track_vals.items()},
+    }
+
+
 # ── Weights for each feature group ───────────────────────────────────────────
 # Sum = 1.0
 WEIGHTS = {
