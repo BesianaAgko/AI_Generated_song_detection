@@ -9,7 +9,7 @@ CLI entry point. Run:
 import argparse
 import json
 from feature_extractor import FeatureExtractor
-from similarity_engine import compare_tracks
+from similarity_engine import compare_tracks, ai_detection_score
 
 
 def main():
@@ -37,12 +37,15 @@ def main():
     print(f"\nTrack B: {args.track_b}")
     features_b = extractor.extract(args.track_b)
 
-    # Comparison
+    # AI detection (per track)
+    ai_a = ai_detection_score(features_a)
+    ai_b = ai_detection_score(features_b)
+
+    # Attribution (pair-level)
     print("\nCalculating similarity...")
     result = compare_tracks(features_a, features_b, verbose=not args.json)
 
     if args.json:
-        # Remove chunk_scores from JSON output for clarity
         output = {
             "track_a": args.track_a,
             "track_b": args.track_b,
@@ -51,9 +54,18 @@ def main():
             "feature_breakdown": {
                 k: round(v, 4) if v is not None else None
                 for k, v in result["feature_breakdown"].items()
-            }
+            },
+            "ai_detection": {
+                "track_a": ai_a,
+                "track_b": ai_b,
+            },
         }
         print(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        print(f"\n{'='*50}")
+        print(f"AI Detection — Track A: {ai_a['ai_score']:.3f} → {ai_a['interpretation']}")
+        print(f"AI Detection — Track B: {ai_b['ai_score']:.3f} → {ai_b['interpretation']}")
+        print(f"{'='*50}")
 
 
 if __name__ == "__main__":
