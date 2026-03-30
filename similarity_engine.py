@@ -160,9 +160,9 @@ def _chunk_similarity(fa: ChunkFeatures, fb: ChunkFeatures) -> dict[str, float]:
         fa.spectral_flatness, fb.spectral_flatness, max_diff=1.0
     )
 
-    # Phase discontinuity (AI artifact — range 0–π)
+    # Phase discontinuity (AI artifact — typical track-to-track diff is ~0.05)
     scores["phase_discontinuity"] = _scalar_sim(
-        fa.phase_discontinuity, fb.phase_discontinuity, max_diff=3.14159
+        fa.phase_discontinuity, fb.phase_discontinuity, max_diff=0.05
     )
 
     return scores
@@ -236,9 +236,9 @@ def compare_tracks(
 
     # Score interpretation
     if attribution_score >= 0.85:
-        interpretation = "Very likely attribution — almost certainly an AI cover"
+        interpretation = "Very likely attribution — tracks are almost certainly related"
     elif attribution_score >= 0.70:
-        interpretation = "Probable attribution — significant similarity"
+        interpretation = "Probable attribution — significant similarity detected"
     elif attribution_score >= 0.50:
         interpretation = "Moderate similarity — ambiguous"
     elif attribution_score >= 0.30:
