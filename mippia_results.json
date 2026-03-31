@@ -1014,5 +1014,225 @@
       "spectral_flatness": 0.9882,
       "phase_discontinuity": 0.9967
     }
+  },
+  {
+    "pair_id": "60",
+    "relation": "remake",
+    "ori_title": "이문세-소녀",
+    "comp_title": "오혁-소녀",
+    "track_a": "오혁-소녀.wav",
+    "track_b": "이문세-소녀.wav",
+    "attribution_score": 0.9756,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9718,
+      "mel": 0.9963,
+      "chroma": 0.9776,
+      "tempo": 0.965,
+      "hnr": 0.9711,
+      "spectral_flatness": 0.9962,
+      "phase_discontinuity": 0.9288
+    }
+  },
+  {
+    "pair_id": "61",
+    "relation": "remake",
+    "ori_title": "조규만-다 줄 거야",
+    "comp_title": "이승기-다 줄 거야",
+    "track_a": "이승기-다 줄 거야.wav",
+    "track_b": "조규만-다 줄 거야.wav",
+    "attribution_score": 0.9743,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9801,
+      "mel": 0.9976,
+      "chroma": 0.9835,
+      "tempo": 0.9195,
+      "hnr": 0.963,
+      "spectral_flatness": 0.9932,
+      "phase_discontinuity": 0.929
+    }
+  },
+  {
+    "pair_id": "62",
+    "relation": "remake",
+    "ori_title": "다섯 손가락-풍선",
+    "comp_title": "동방신기-풍선",
+    "track_a": "다섯 손가락-풍선.wav",
+    "track_b": "동방신기-풍선.wav",
+    "attribution_score": 0.978,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9738,
+      "mel": 0.9953,
+      "chroma": 0.9732,
+      "tempo": 1.0,
+      "hnr": 0.9833,
+      "spectral_flatness": 0.9851,
+      "phase_discontinuity": 0.9303
+    }
+  },
+  {
+    "pair_id": "63",
+    "relation": "remake",
+    "ori_title": "뱅크-가질 수 없는 너",
+    "comp_title": "휘인-가질 수 없는 너",
+    "track_a": "뱅크-가질 수 없는 너.wav",
+    "track_b": "휘인-가질 수 없는 너.wav",
+    "attribution_score": 0.9591,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9656,
+      "mel": 0.9972,
+      "chroma": 0.9634,
+      "tempo": 0.8755,
+      "hnr": 0.9476,
+      "spectral_flatness": 0.9884,
+      "phase_discontinuity": 0.9121
+    }
+  },
+  {
+    "pair_id": "64",
+    "relation": "plag_doubt",
+    "ori_title": "TLC - No Scrubs (Lyrics)",
+    "comp_title": "Ed Sheeran - Shape of You (Official Music Video)",
+    "track_a": "Ed Sheeran - Shape of You _Official Music Video_.wav",
+    "track_b": "TLC - No Scrubs _Lyrics_.wav",
+    "attribution_score": 0.9064,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9599,
+      "mel": 0.9954,
+      "chroma": 0.9764,
+      "tempo": 0.4604,
+      "hnr": 0.9026,
+      "spectral_flatness": 0.953,
+      "phase_discontinuity": 0.7453
+    }
+  },
+  {
+    "pair_id": "65",
+    "relation": "plag_doubt",
+    "ori_title": "Let's Get It On",
+    "comp_title": "Ed Sheeran - Thinking out Loud (Lyrics)",
+    "track_a": "Ed Sheeran - Thinking out Loud _Lyrics_.wav",
+    "track_b": "Let_s Get It On.wav",
+    "attribution_score": 0.9479,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9869,
+      "mel": 0.9984,
+      "chroma": 0.9799,
+      "tempo": 0.5,
+      "hnr": 0.9893,
+      "spectral_flatness": 0.9965,
+      "phase_discontinuity": 0.9475
+    }
+  },
+  {
+    "pair_id": "66",
+    "relation": "plag",
+    "ori_title": "The Police - Every Breath You Take (Official Music Video)",
+    "comp_title": "Puff Daddy [feat. Faith Evans & 112] - I'll Be Missing You (Official Music Video)",
+    "track_a": "Puff Daddy _feat_ Faith Evans _ 112_ - I_ll Be Missing You _Official Music Video_.wav",
+    "track_b": "The Police - Every Breath You Take _Official Music Video_.wav",
+    "attribution_score": 0.9633,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9608,
+      "mel": 0.9967,
+      "chroma": 0.9764,
+      "tempo": 0.9119,
+      "hnr": 0.9142,
+      "spectral_flatness": 0.9932,
+      "phase_discontinuity": 0.9531
+    }
+  },
+  {
+    "pair_id": "67",
+    "relation": "remake",
+    "ori_title": "Computer Love (2009 Remaster)",
+    "comp_title": "Coldplay - Talk (Official Video)",
+    "track_a": "Coldplay - Talk _Official Video_.wav",
+    "track_b": "Computer Love _2009 Remaster_.wav",
+    "attribution_score": 0.9675,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9662,
+      "mel": 0.9963,
+      "chroma": 0.985,
+      "tempo": 0.9494,
+      "hnr": 0.9524,
+      "spectral_flatness": 0.9732,
+      "phase_discontinuity": 0.8953
+    }
+  },
+  {
+    "pair_id": "68",
+    "relation": "plag",
+    "ori_title": "Taj Mahal",
+    "comp_title": "Rod Stewart - Da Ya Think I'm Sexy? (Official Video) [HD Remaster]",
+    "track_a": "Rod Stewart - Da Ya Think I_m Sexy_ _Official Video_ _HD Remaster_.wav",
+    "track_b": "Taj Mahal.wav",
+    "attribution_score": 0.9189,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9541,
+      "mel": 0.997,
+      "chroma": 0.9714,
+      "tempo": 0.6058,
+      "hnr": 0.9167,
+      "spectral_flatness": 0.977,
+      "phase_discontinuity": 0.7349
+    }
+  },
+  {
+    "pair_id": "69",
+    "relation": "plag",
+    "ori_title": "Right Said Fred - I'm Too Sexy (Original Mix - 2006 Version)",
+    "comp_title": "Taylor Swift - Look What You Made Me Do",
+    "track_a": "Right Said Fred - I_m Too Sexy _Original Mix - 2006 Version_.wav",
+    "track_b": "Taylor Swift - Look What You Made Me Do.wav",
+    "attribution_score": 0.9745,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9794,
+      "mel": 0.9964,
+      "chroma": 0.9874,
+      "tempo": 0.8975,
+      "hnr": 0.9733,
+      "spectral_flatness": 0.9927,
+      "phase_discontinuity": 0.9312
+    }
+  },
+  {
+    "pair_id": "70",
+    "relation": "plag_doubt",
+    "ori_title": "The Kinks - Picture Book (Official Audio)",
+    "comp_title": "Green Day - Warning - [HQ]",
+    "track_a": "Green Day - Warning - _HQ_.wav",
+    "track_b": "The Kinks - Picture Book _Official Audio_.wav",
+    "attribution_score": 0.9483,
+    "interpretation": "Strong evidence of relatedness — high pairwise similarity",
+    "feature_breakdown": {
+      "clap": null,
+      "mfcc": 0.9662,
+      "mel": 0.9978,
+      "chroma": 0.972,
+      "tempo": 1.0,
+      "hnr": 0.798,
+      "spectral_flatness": 0.9812,
+      "phase_discontinuity": 0.8679
+    }
   }
 ]
