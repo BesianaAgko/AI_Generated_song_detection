@@ -108,7 +108,7 @@ def main():
     coefs = pipeline.named_steps["clf"].coef_[0]
     print("Feature importance (coefficient magnitude):")
     for feat, coef in sorted(zip(FEATURE_COLS, coefs), key=lambda x: abs(x[1]), reverse=True):
-        bar = "█" * int(abs(coef) * 5)
+        bar = "#" * int(abs(coef) * 5)
         print(f"  {feat:25s}: {coef:+.4f}  {bar}")
 
     # ── Save ──────────────────────────────────────────────────────────────────

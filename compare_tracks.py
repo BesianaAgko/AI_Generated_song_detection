@@ -67,8 +67,8 @@ def main():
         print(json.dumps(output, ensure_ascii=False, indent=2))
     else:
         print(f"\n{'='*50}")
-        print(f"AI Detection — Track A: {ai_a['ai_score']:.3f} → {ai_a['interpretation']}")
-        print(f"AI Detection — Track B: {ai_b['ai_score']:.3f} → {ai_b['interpretation']}")
+        print(f"AI Detection - Track A: {ai_a['ai_score']:.3f} - {ai_a['interpretation']}")
+        print(f"AI Detection - Track B: {ai_b['ai_score']:.3f} - {ai_b['interpretation']}")
         print(f"{'='*50}")
 
 

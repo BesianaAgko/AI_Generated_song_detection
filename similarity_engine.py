@@ -462,7 +462,7 @@ def compare_tracks(
         )
         print(f"\nPer-feature breakdown:")
         for k, v in feature_breakdown.items():
-            bar = "█" * int((v or 0) * 20)
+            bar = "#" * int((v or 0) * 20)
             print(f"  {k:8s}: {(v or 0):.3f}  {bar}")
         print(f"{'='*50}\n")
 
