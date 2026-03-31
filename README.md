@@ -4,6 +4,10 @@ A Python system that takes two full-length audio files and outputs:
 1. **Attribution Score** — likelihood that Track B is derived from Track A
 2. **AI Detection Score** — likelihood that a track is AI-generated (Suno, Udio, etc.)
 
+The current version uses:
+- a **consistency-aware attribution scorer** that penalizes accidental local matches
+- a **hybrid AI detector** that blends a trained Logistic Regression model with feature-based artifact guardrails
+
 ---
 
 ## Quick Start
@@ -25,7 +29,8 @@ Track A: original.mp3
 Track B: suspected_cover.mp3
 
 ==================================================
-Attribution Score: 0.961 — Strong evidence of relatedness — high pairwise similarity detected
+Attribution Score: 0.707 — Likely related tracks — significant similarity detected
+Consistency diagnostics: base=0.958, order=0.950, coverage=0.219, factor=0.739
 
 Per-feature breakdown:
   mfcc    : 0.979  ████████████████████
@@ -36,8 +41,8 @@ Per-feature breakdown:
   ...
 ==================================================
 
-AI Detection — Track A: 0.12 → Likely human-made  [trained_classifier]
-AI Detection — Track B: 0.84 → Likely AI-generated [trained_classifier]
+AI Detection — Track A: 0.086 → Likely human-made  [hybrid_detector]
+AI Detection — Track B: 0.768 → Likely AI-generated [hybrid_detector]
 ==================================================
 ```
 
@@ -68,15 +73,18 @@ Feature Extraction               Feature Extraction
    └──────────────┬──────────────────┘
                   ▼
         Similarity Engine
-     Best-match per chunk strategy
-     Weighted cosine + scalar similarity
+  Bidirectional chunk matching +
+  global consistency diagnostics
+  (order / coverage / mutuality)
                   │
         ┌─────────┴──────────┐
         ▼                    ▼
   Attribution Score     AI Detection Score
-     (0.0 – 1.0)      Logistic Regression
-                       trained on 255 tracks
-                         (CV F1 = 0.85)
+     (0.0 – 1.0)      Hybrid detector
+                    Logistic Regression +
+                    heuristic artifact guardrail
+                      trained on 255 tracks
+                        (CV F1 = 0.85)
 ```
 
 *CLAP is optional — use `--clap` flag.
@@ -88,13 +96,17 @@ Feature Extraction               Feature Extraction
 A naive approach analyzes only the first 30 seconds. This system avoids that through:
 
 1. **Overlapping chunks**: 30s windows with 10s hop → a 3-minute track produces ~15 chunks covering the entire audio
-2. **Best-match alignment**: Each chunk of Track A is matched against *all* chunks of Track B. The final score is the mean of all best matches — handling tempo shifts, reordering, and intro/outro differences
+2. **Bidirectional matching**: chunks from A are matched against B and chunks from B are matched against A
+3. **Consistency-aware scoring**: the final attribution score is reduced when the best matches are not globally ordered or do not cover the destination track consistently
 
 ---
 
 ## AI Detection (Task 1)
 
-The `ai_detection_score()` function uses a trained **Logistic Regression classifier**:
+The `ai_detection_score()` function uses a **hybrid detector**:
+- a trained **Logistic Regression classifier** over track-level summary features
+- a **feature-based heuristic guardrail** using spectral flatness, phase discontinuity, and HNR
+- a safety override for strongly synthetic artifact patterns that the classifier underestimates
 
 | | Value |
 |---|---|
@@ -106,28 +118,31 @@ The `ai_detection_score()` function uses a trained **Logistic Regression classif
 | **CV F1** | **0.85 ± 0.06** |
 | **CV Recall** | **0.96 ± 0.08** |
 
-Key discriminating feature: `spectral_flatness` (coefficient: -3.64) — AI generators produce near-zero spectral flatness, while human recordings show higher variance.
+Current demo thresholds:
+- `>= 0.75` → likely AI-generated
+- `>= 0.55` → possibly AI-generated
+- `< 0.20` → likely human-made
+
+Sanity-check examples from the current build:
+- Jennifer Rush original: `0.0862`
+- Céline Dion remake: `0.0532`
+- SONICS Suno track: `0.7679`
 
 ---
 
 ## Attribution (Task 2 — Bonus)
 
-Evaluated on **51 complete pairs** from the MIPPIA SMP dataset:
+The attribution scorer was recently recalibrated to reduce false positives on unrelated tracks by adding a global consistency factor on top of local chunk similarity.
 
-| Relation | Count |
-|---|---|
-| plag | 21 |
-| plag_doubt | 16 |
-| remake | 13 |
+Current demo threshold:
+- `>= 0.55` → related tracks
 
-| Metric | Value (threshold=0.90) |
-|---|---|
-| Precision | 0.879 |
-| **Recall** | **1.000** |
-| **F1** | **0.936** |
-| Accuracy | 0.931 |
+Sanity-check examples from the current build:
+- Positive pair: Jennifer Rush original ↔ Céline Dion remake = `0.7074`
+- Negative pair: Jennifer Rush original ↔ SONICS Suno track = `0.3168`
+- Negative pair: Jennifer Rush original ↔ Summer Dream = `0.2494`
 
-Mean attribution score on related pairs: **0.9605** (range: 0.90–0.99)
+Important: the existing [mippia_results.json](c:\Users\up105\Documents\Orfium_challenge\AI_Generated_song_detection\mippia_results.json) and [evaluation_metrics.json](c:\Users\up105\Documents\Orfium_challenge\AI_Generated_song_detection\evaluation_metrics.json) were generated before this scorer recalibration. Re-run the evaluation pipeline below if you want fully up-to-date benchmark numbers.
 
 ---
 
@@ -172,43 +187,61 @@ pip install -r requirements.txt
 
 ---
 
-## Just want to compare two tracks?
-
-If you only want to run `compare_tracks.py` on your own audio files, you need to first train the AI detector (one-time step):
-
-```bash
-# Step 1 — Train the AI detector (required before first use)
-# This generates ai_detector_model.pkl which compare_tracks.py depends on.
-# If you skip this, AI detection will fall back to a heuristic profile.
-python train_ai_detector.py
-
-# Step 2 — Compare your tracks
-python compare_tracks.py "path/to/original.wav" "path/to/cover.wav"
-```
-
-> **Note:** `train_ai_detector.py` requires `ai_features_cache.pkl` (AI features) and the `features/` directory (human features). Both are generated when you run the full pipeline below. `ai_detector_model.pkl` is also excluded from the repo — you must run `train_ai_detector.py` at least once to generate it.
-
----
-
 ## Running the Full Pipeline
 
 > **Prerequisites:** Download the datasets first — see the [Datasets](#datasets) section below for instructions on where to place each one.
 
 ```bash
-# 1. Train the AI detector (run once after datasets are in place)
-python train_ai_detector.py
-
-# 2. Evaluate attribution on all complete MIPPIA pairs
+# Step 1 — Evaluate attribution on all complete MIPPIA pairs
+#    This also generates the features/ directory (human feature cache)
+#    needed by the AI detector training in the next step.
 #    Results are saved incrementally to mippia_results.json
 #    (safe to interrupt and resume)
 python evaluate_mippia.py
 
-# 3. Compute precision/recall/F1 from the results
+# Step 2 — Train the AI detector (run once, after Step 1)
+#    Requires: features/ (from Step 1) and data/FakeMusicCaps/ + data/sonics/
+#    Generates: ai_detector_model.pkl and ai_features_cache.pkl
+python train_ai_detector.py
+
+# Step 3 — Compute precision/recall/F1 from the attribution results
 python evaluate_attribution.py
 
-# 4. Compare specific tracks
+# If you modify similarity_engine.py, rerun Steps 1 and 3 to refresh
+# mippia_results.json and evaluation_metrics.json with the new scorer.
+
+# Step 4 — Explore the datasets (optional but recommended)
+#    Open and run all cells in:
+#    - data_exploration.ipynb  (dataset analysis, Parts 1–5)
+#    - demo_notebook.ipynb     (end-to-end demo with real audio)
+
+# Step 5 — Compare any two tracks
 python compare_tracks.py "path/to/original.wav" "path/to/cover.wav"
+
+# Example with a real MIPPIA pair:
+python compare_tracks.py \
+  "smp_dataset/final_dataset/5/Jennifer Rush - The Power Of Love _Official Video_ _VOD_.wav" \
+  "smp_dataset/final_dataset/5/Céline Dion - The Power Of Love _Official Remastered HD Video_.wav"
 ```
+
+---
+
+## Just want to compare two tracks (no datasets)?
+
+If you only have your own audio files and want to skip the full pipeline:
+
+```bash
+# train_ai_detector.py requires the features/ and data/ directories.
+# Without them, compare_tracks.py will still work but AI detection
+# will fall back to the heuristic profile instead of the hybrid detector.
+
+python compare_tracks.py "path/to/original.mp3" "path/to/cover.mp3"
+```
+
+Supported formats: `.mp3` `.wav` `.flac` `.ogg` `.m4a`
+Minimum recommended duration: **~40 seconds** per track.
+
+---
 
 ### Expected directory structure before running
 
@@ -345,6 +378,7 @@ data/FakeMusicCaps/
 - **No tempo normalization**: Significantly sped-up/slowed-down covers may score lower
 - **CLAP optional**: Without neural embeddings, purely spectral features are used
 - **Attribution ≠ AI detection**: High attribution score means the tracks are related, not necessarily that one is AI-generated
+- **Thresholds are currently demo-calibrated**: after the scorer update, a full benchmark rerun is still recommended for final reporting
 
 ---
 
@@ -352,7 +386,7 @@ data/FakeMusicCaps/
 
 | Decision | Rationale | Trade-off |
 |---|---|---|
-| Best-match per chunk | Handles reordering, tempo shifts | May overestimate for partial matches |
-| Logistic Regression | Interpretable, fast, calibrated probabilities | Less powerful than deep models |
+| Bidirectional chunk matching + consistency factor | Keeps local flexibility but penalizes accidental matches | Adds more tuning and diagnostics |
+| Hybrid AI detector | Keeps LR probabilities but protects against missed synthetic artifacts | More heuristic logic to maintain |
 | Cosine similarity | Scale-invariant for high-dim embeddings | Loses magnitude info |
 | CLAP optional | Works without GPU | Weaker without neural embeddings |

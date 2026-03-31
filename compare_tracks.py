@@ -55,6 +55,10 @@ def main():
                 k: round(v, 4) if v is not None else None
                 for k, v in result["feature_breakdown"].items()
             },
+            "diagnostics": {
+                k: round(v, 4) if v is not None else None
+                for k, v in result.get("diagnostics", {}).items()
+            },
             "ai_detection": {
                 "track_a": ai_a,
                 "track_b": ai_b,

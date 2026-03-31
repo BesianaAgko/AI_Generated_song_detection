@@ -84,33 +84,6 @@ def ai_detection_score(features: list[ChunkFeatures]) -> dict:
         "mfcc1_mean":          float(np.mean([f.mfcc_mean[0] for f in features if f.mfcc_mean.size > 0])),
     }
 
-    # ── Trained classifier (primary) ───────────────────────────────────────────
-    if _TRAINED_DETECTOR is not None:
-        pipeline     = _TRAINED_DETECTOR["pipeline"]
-        feature_cols = _TRAINED_DETECTOR["feature_cols"]
-        x = np.array([[track_means.get(col, 0.0) for col in feature_cols]])
-        ai_prob  = float(pipeline.predict_proba(x)[0][1])
-        ai_score = round(ai_prob, 4)
-
-        if ai_score >= 0.80:
-            interpretation = "Likely AI-generated"
-        elif ai_score >= 0.60:
-            interpretation = "Possibly AI-generated"
-        elif ai_score >= 0.40:
-            interpretation = "Ambiguous — borderline case"
-        elif ai_score >= 0.20:
-            interpretation = "Likely human-made"
-        else:
-            interpretation = "Likely human-made"
-
-        return {
-            "ai_score":      ai_score,
-            "interpretation": interpretation,
-            "method":        "trained_classifier (LR, CV F1=0.85)",
-            "track_means":   {k: round(v, 6) for k, v in track_means.items()},
-        }
-
-    # ── Fallback: Gaussian heuristic ───────────────────────────────────────────
     heuristic_vals = {
         "spectral_flatness":   track_means["spectral_flatness"],
         "phase_discontinuity": track_means["phase_discontinuity"],
@@ -122,10 +95,58 @@ def ai_detection_score(features: list[ChunkFeatures]) -> dict:
         p_human = _gaussian_pdf(val, _HUMAN_PROFILE[feat]["mean"], _HUMAN_PROFILE[feat]["std"])
         feature_scores[feat] = float(p_ai / (p_ai + p_human + 1e-10))
 
-    ai_score = float(np.clip(
+    heuristic_score = float(np.clip(
         sum(feature_scores[f] * w for f, w in _AI_DETECTION_WEIGHTS.items()),
         0.0, 1.0
     ))
+
+    # ── Trained classifier (primary) ───────────────────────────────────────────
+    if _TRAINED_DETECTOR is not None:
+        pipeline     = _TRAINED_DETECTOR["pipeline"]
+        feature_cols = _TRAINED_DETECTOR["feature_cols"]
+        x = np.array([[track_means.get(col, 0.0) for col in feature_cols]])
+        trained_ai_prob = float(pipeline.predict_proba(x)[0][1])
+        ai_score = 0.75 * trained_ai_prob + 0.25 * heuristic_score
+
+        # Guardrail: extremely AI-like spectral flatness should not be suppressed
+        # by an underconfident classifier on clearly synthetic artifacts.
+        if (
+            feature_scores["spectral_flatness"] >= 0.60
+            and heuristic_score >= 0.50
+            and trained_ai_prob < 0.50
+        ):
+            ai_score = max(
+                ai_score,
+                0.60 + 0.25 * feature_scores["spectral_flatness"],
+            )
+
+        ai_score = round(float(np.clip(ai_score, 0.0, 1.0)), 4)
+
+        if ai_score >= 0.75:
+            interpretation = "Likely AI-generated"
+        elif ai_score >= 0.55:
+            interpretation = "Possibly AI-generated"
+        elif ai_score >= 0.40:
+            interpretation = "Ambiguous — borderline case"
+        elif ai_score >= 0.20:
+            interpretation = "Probably human-made"
+        else:
+            interpretation = "Likely human-made"
+
+        return {
+            "ai_score":      ai_score,
+            "interpretation": interpretation,
+            "method":        "hybrid_detector (LR + heuristic guardrail, CV F1=0.85)",
+            "feature_scores": {k: round(v, 4) for k, v in feature_scores.items()},
+            "component_scores": {
+                "trained_classifier": round(trained_ai_prob, 4),
+                "heuristic": round(heuristic_score, 4),
+            },
+            "track_means":   {k: round(v, 6) for k, v in track_means.items()},
+        }
+
+    # ── Fallback: Gaussian heuristic ───────────────────────────────────────────
+    ai_score = heuristic_score
 
     if ai_score >= 0.80:
         interpretation = "Likely AI-generated"
@@ -150,7 +171,7 @@ def ai_detection_score(features: list[ChunkFeatures]) -> dict:
 # ── Weights for each feature group ───────────────────────────────────────────
 # Sum = 1.0
 WEIGHTS = {
-    "clap":               0.35,  # Neural embedding — πιο σημαντικό
+    "clap":               0.35,  # Neural embedding — strongest signal when available
     "mfcc":               0.15,  # Timbre
     "mel":                0.10,  # Log-mel spectrogram summary
     "chroma":             0.15,  # Harmony / melody
@@ -158,6 +179,14 @@ WEIGHTS = {
     "hnr":                0.08,  # Harmonic-to-Noise Ratio (AI artifact)
     "spectral_flatness":  0.07,  # Spectral flatness (AI artifact)
     "phase_discontinuity":0.05,  # Phase discontinuity (AI artifact)
+}
+
+_CONSISTENCY_WEIGHTS = {
+    "mutual": 0.08,
+    "coverage": 0.05,
+    "order": 0.60,
+    "margin": 0.05,
+    "floor": 0.18,
 }
 
 
@@ -245,6 +274,100 @@ def _weighted_chunk_score(scores: dict[str, float]) -> float:
     return float(np.clip(total_score, 0.0, 1.0))
 
 
+def _best_chunk_matches(
+    features_src: list[ChunkFeatures],
+    features_dst: list[ChunkFeatures],
+) -> tuple[list[float], list[int], list[float], dict[str, list[float]]]:
+    """Match each source chunk to its best destination chunk."""
+    match_scores: list[float] = []
+    match_indices: list[int] = []
+    match_margins: list[float] = []
+    feature_totals: dict[str, list[float]] = {k: [] for k in WEIGHTS}
+
+    for src_chunk in features_src:
+        best_score = -1.0
+        second_best_score = -1.0
+        best_index = -1
+        best_feat_scores: dict[str, float] = {}
+
+        for dst_index, dst_chunk in enumerate(features_dst):
+            feat_scores = _chunk_similarity(src_chunk, dst_chunk)
+            total_score = _weighted_chunk_score(feat_scores)
+
+            if total_score > best_score:
+                second_best_score = best_score
+                best_score = total_score
+                best_index = dst_index
+                best_feat_scores = feat_scores
+            elif total_score > second_best_score:
+                second_best_score = total_score
+
+        match_scores.append(best_score)
+        match_indices.append(best_index)
+        match_margins.append(max(0.0, best_score - max(second_best_score, 0.0)))
+
+        for feature_name, feature_score in best_feat_scores.items():
+            if feature_score is not None:
+                feature_totals[feature_name].append(feature_score)
+
+    return match_scores, match_indices, match_margins, feature_totals
+
+
+def _coverage_ratio(match_indices: list[int], target_len: int) -> float:
+    """How much of the destination track is covered by distinct matches."""
+    if target_len <= 0:
+        return 0.0
+    unique_matches = {index for index in match_indices if index >= 0}
+    return float(np.clip(len(unique_matches) / target_len, 0.0, 1.0))
+
+
+def _order_consistency(match_indices: list[int]) -> float:
+    """Measures whether best-match chunk indices preserve global ordering."""
+    if len(match_indices) < 2:
+        return 0.0
+
+    x = np.arange(len(match_indices), dtype=float)
+    y = np.asarray(match_indices, dtype=float)
+    if np.allclose(y, y[0]):
+        return 0.0
+
+    corr = np.corrcoef(x, y)[0, 1]
+    if np.isnan(corr):
+        return 0.0
+    return float(np.clip((corr + 1.0) / 2.0, 0.0, 1.0))
+
+
+def _mutual_match_ratio(matches_ab: list[int], matches_ba: list[int]) -> float:
+    """Fraction of chunk matches that are mutual nearest neighbors."""
+    if not matches_ab or not matches_ba:
+        return 0.0
+
+    mutual_matches = 0
+    for index_a, index_b in enumerate(matches_ab):
+        if 0 <= index_b < len(matches_ba) and matches_ba[index_b] == index_a:
+            mutual_matches += 1
+
+    normalizer = max(1, min(len(matches_ab), len(matches_ba)))
+    return float(np.clip(mutual_matches / normalizer, 0.0, 1.0))
+
+
+def _consistency_multiplier(
+    mutual_ratio: float,
+    coverage_ratio: float,
+    order_consistency: float,
+    margin_score: float,
+) -> float:
+    """Turns chunk-match diagnostics into a conservative global confidence factor."""
+    weighted_sum = (
+        _CONSISTENCY_WEIGHTS["mutual"] * mutual_ratio
+        + _CONSISTENCY_WEIGHTS["coverage"] * coverage_ratio
+        + _CONSISTENCY_WEIGHTS["order"] * (order_consistency ** 2)
+        + _CONSISTENCY_WEIGHTS["margin"] * margin_score
+        + _CONSISTENCY_WEIGHTS["floor"]
+    )
+    return float(np.clip(weighted_sum, 0.0, 1.0))
+
+
 def compare_tracks(
     features_a: list[ChunkFeatures],
     features_b: list[ChunkFeatures],
@@ -266,49 +389,77 @@ def compare_tracks(
                     - chunk_scores: list of floats (one per chunk of A)
                     - feature_breakdown: mean score per feature group
     """
-    chunk_scores     = []
-    feature_totals: dict[str, list] = {k: [] for k in WEIGHTS}
+    if not features_a or not features_b:
+        return {
+            "attribution_score": 0.0,
+            "interpretation": "Insufficient features for comparison",
+            "chunk_scores": [],
+            "feature_breakdown": {k: None for k in WEIGHTS},
+            "diagnostics": {
+                "base_similarity": 0.0,
+                "mutual_match_ratio": 0.0,
+                "coverage_ratio": 0.0,
+                "order_consistency": 0.0,
+                "margin_score": 0.0,
+                "consistency_multiplier": 0.0,
+            },
+        }
 
-    for fa in features_a:
-        best_score        = -1.0
-        best_feat_scores  = {}
+    chunk_scores_ab, match_indices_ab, match_margins_ab, feature_totals_ab = _best_chunk_matches(
+        features_a, features_b
+    )
+    chunk_scores_ba, match_indices_ba, match_margins_ba, feature_totals_ba = _best_chunk_matches(
+        features_b, features_a
+    )
 
-        for fb in features_b:
-            feat_scores  = _chunk_similarity(fa, fb)
-            total        = _weighted_chunk_score(feat_scores)
+    base_similarity = float(np.mean(chunk_scores_ab + chunk_scores_ba))
+    mutual_ratio = _mutual_match_ratio(match_indices_ab, match_indices_ba)
+    coverage_ratio = float(np.mean([
+        _coverage_ratio(match_indices_ab, len(features_b)),
+        _coverage_ratio(match_indices_ba, len(features_a)),
+    ]))
+    order_consistency = float(np.mean([
+        _order_consistency(match_indices_ab),
+        _order_consistency(match_indices_ba),
+    ]))
+    margin_score = float(np.clip(np.mean(match_margins_ab + match_margins_ba) / 0.20, 0.0, 1.0))
+    consistency_multiplier = _consistency_multiplier(
+        mutual_ratio,
+        coverage_ratio,
+        order_consistency,
+        margin_score,
+    )
 
-            if total > best_score:
-                best_score       = total
-                best_feat_scores = feat_scores
+    attribution_score = float(np.clip(base_similarity * consistency_multiplier, 0.0, 1.0))
+    chunk_scores = chunk_scores_ab
 
-        chunk_scores.append(best_score)
-        for k, v in best_feat_scores.items():
-            if v is not None:
-                feature_totals[k].append(v)
-
-    attribution_score = float(np.mean(chunk_scores))
+    feature_breakdown = {}
+    for feature_name in WEIGHTS:
+        feature_values = feature_totals_ab[feature_name] + feature_totals_ba[feature_name]
+        feature_breakdown[feature_name] = float(np.mean(feature_values)) if feature_values else None
 
     # Score interpretation
-    if attribution_score >= 0.85:
+    if attribution_score >= 0.72:
         interpretation = "Strong evidence of relatedness — high pairwise similarity"
-    elif attribution_score >= 0.70:
+    elif attribution_score >= 0.55:
         interpretation = "Likely related tracks — significant similarity detected"
-    elif attribution_score >= 0.50:
+    elif attribution_score >= 0.40:
         interpretation = "Moderate similarity — ambiguous"
     elif attribution_score >= 0.30:
         interpretation = "Low similarity — likely unrelated tracks"
     else:
         interpretation = "Unrelated tracks"
 
-    feature_breakdown = {
-        k: float(np.mean(v)) if v else None
-        for k, v in feature_totals.items()
-    }
-
     if verbose:
         print(f"\n{'='*50}")
         print(f"Attribution Score: {attribution_score:.3f}")
         print(f"Interpretation: {interpretation}")
+        print(
+            "Consistency diagnostics: "
+            f"base={base_similarity:.3f}, mutual={mutual_ratio:.3f}, "
+            f"coverage={coverage_ratio:.3f}, order={order_consistency:.3f}, "
+            f"margin={margin_score:.3f}, factor={consistency_multiplier:.3f}"
+        )
         print(f"\nPer-feature breakdown:")
         for k, v in feature_breakdown.items():
             bar = "█" * int((v or 0) * 20)
@@ -320,4 +471,12 @@ def compare_tracks(
         "interpretation":    interpretation,
         "chunk_scores":      chunk_scores,
         "feature_breakdown": feature_breakdown,
+        "diagnostics": {
+            "base_similarity": base_similarity,
+            "mutual_match_ratio": mutual_ratio,
+            "coverage_ratio": coverage_ratio,
+            "order_consistency": order_consistency,
+            "margin_score": margin_score,
+            "consistency_multiplier": consistency_multiplier,
+        },
     }
